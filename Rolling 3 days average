@@ -1,0 +1,16 @@
+SELECT
+	'2021-01-31' AS transaction_date,
+    AVG(day_total_transaction_amount) as rolling_three_day_avg
+FROM
+-- subquery to calculate total transaction amount per day
+  (SELECT
+      TO_CHAR(transaction_time, 'YYYY-MM-DD') as transaction_date,
+      SUM(transaction_amount) AS day_total_transaction_amount
+  FROM
+      transactions
+  WHERE
+      transaction_time BETWEEN '2021-01-29 00:00:00.000000' AND'2021-01-31 23:59:59.000000'
+  GROUP BY 
+      transaction_date
+  ORDER BY
+      transaction_date) AS temp_table
